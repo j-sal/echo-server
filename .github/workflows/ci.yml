@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Rust on Windows
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      # Step 3: Build the project in release mode
+      - name: Build project
+        run: cargo build --release
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: cargo test
